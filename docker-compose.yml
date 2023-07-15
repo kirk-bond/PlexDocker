@@ -47,7 +47,7 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/Denver
+      - TZ=America/New York
       - UMASK_SET=022
     volumes:
       - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Sonarr:/config
@@ -95,7 +95,7 @@ services:
         - branch=v2-master #v2-master or #v2-develop
         - PUID=998
         - PGID=100
-        - TZ=America/Denver
+        - TZ=America/New York
 
   jackett:
     image: linuxserver/jackett
@@ -103,7 +103,7 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/Denver
+      - TZ=America/New York
     volumes:
       - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Jackett:/config
       - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Torrents:/downloads
@@ -119,7 +119,7 @@ services:
       environment:
         - PUID=998
         - PGID=100
-        - TZ=America/Denver
+        - TZ=America/NewYork
         - UMASK_SET=022
       volumes:
         #- /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -134,7 +134,7 @@ services:
       environment:
         - PUID=998
         - PGID=100
-        - TZ=America/Denver
+        - TZ=America/New York
         - UMASK_SET=022
       volumes:
         - /:/host:ro,rslave
@@ -148,7 +148,7 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/Denver
+      - TZ=America/New York
       - UMASK_SET=022
     ports:
       - 3000:3000
