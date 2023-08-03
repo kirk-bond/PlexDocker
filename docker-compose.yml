@@ -6,14 +6,17 @@ services:
     container_name: plex
     network_mode: bridge
     environment:
-      - PUID=1000
+      - PUID=1000f
       - PGID=1000
       - VERSION=docker
-      - PLEX_CLAIM= claim--33HMoyfEGcx6GMbPg4C
+      - PLEX_CLAIM=claim-MevVUxfsGWnvs4gr4gze
     volumes:
       # - /mnt/media/Movies:/movies
       # - /mnt/media/Music:/music
-      - C:\Users\kirkb\Videos:/movies
+      - /media/zonmei/YottaDisk11/media/Movies:/data/movies
+      - /media/zonmei/YottaDisk11/media/Music:/data/music
+      - /media/zonmei/YottaDisk11/media/Pictures:/data/Pictures
+      - /media/zonmei/YottaDisk11/media/Books:/data/Books
     ports:
       - "32400:32400"
       - "1900:1900"
@@ -32,11 +35,12 @@ services:
     container_name: radarr
     environment:
       - PUID=1000
-      - PGID=1003
-      - TZ=America/NewYork
+      - PGID=1000
+      - TZ=America/New_York
     # volumes:
-      # - /mnt/media:/config
-      # - /mnt/media/movies:/movies #optional
+      - /media/zonmei/YottaDisk11/configs/radarr:/config
+      # - /media/zonmei/YottaDisk11/media/Movies:/data/movies
+      - /media/zonmei/YottaDisk11/media/Movies:/data/movies
       # - /path/to/downloadclient-downloads:/downloads #optional
     ports:
       - 7878:7878
@@ -48,39 +52,39 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/New York
+      - TZ=America/New_York
       - UMASK_SET=022
     # volumes:
-      # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Sonarr:/config
-      # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/TV:/tv
-      # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Torrents:/downloads
+      - /media/zonmei/YottaDisk11/configs/sonarr:/config
+      # - /srv/dev-disk-by-partuuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/TV:/tv
+      - /media/zonmei/YottaDisk21/Torrents:/data/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
 
-  # qbittorrentvpn:
-  #   image: markusmcnugen/qbittorrentvpn
-  #   container_name: qbittorrentvpn
-  #   privileged: true   
-  #   environment:
-  #     - VPN_USERNAME=username
-  #     - VPN_PASSWORD=password
-  #     - PUID=998
-  #     - PGID=100
-  #     - WEBUI_PORT_ENV=8080
-  #     - INCOMING_PORT_ENV=8999
-  #     - VPN_ENABLED=yes
-  #     - LAN_NETWORK=192.168.68.0/24 #adjust this to YOUR network settings
-  #     - NAME_SERVERS=1.1.1.1,1.0.0.1 #you can use whatever DNS provider you want
-  #   ports:
-  #     - 8080:8080
-  #     - 8999:8999
-  #     - 8999:8999/udp
-  #   volumes:
-  #     - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/QBittorrentVPN:/config
-  #     - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Torrents:/downloads
-  #     - /etc/timezone:/etc/timezone:ro #This is for TimeZone
-  #   restart: unless-stopped   
+  qbittorrentvpn:
+    image: markusmcnugen/qbittorrentvpn
+    container_name: qbittorrentvpn
+    privileged: true   
+    environment:
+      - VPN_USERNAME=hc6ehIBg0oF1kku0
+      - VPN_PASSWORD=SDQAo11LcPjja0N5C9TMovUsu32BXAZl
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT_ENV=8080
+      - INCOMING_PORT_ENV=8999
+      - VPN_ENABLED=yes
+      - LAN_NETWORK=192.168.1.0/24 #adjust this to YOUR network settings
+      - NAME_SERVERS=1.1.1.1,1.0.0.1 #you can use whatever DNS provider you want
+    ports:
+      - 8080:8080
+      - 8999:8999
+      - 8999:8999/udp
+    volumes:
+      - /media/zonmei/YottaDisk11/configs/QBittorrentVPN:/config
+      - /media/zonmei/YottaDisk21/Torrents:/data/downloads
+      - /etc/timezone:/etc/timezone:ro #This is for TimeZone
+    restart: unless-stopped   
 
   organizr:
     container_name: organizr
@@ -90,14 +94,14 @@ services:
     ports:
         - 90:80
     volumes:
-        # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Organizr:/config
-        - C:\Users\kirkb\Pictures:/config
+        - /media/zonmei/YottaDisk11/configs/organizr:/config
+        # - C:\Users\kirkb\Pictures:/config
     environment:
         - fpm=true #true or false | using true will provide better performance
         - branch=v2-master #v2-master or #v2-develop
-        - PUID=998
-        - PGID=100
-        - TZ=America/New York
+        - PUID=1000
+        - PGID=1000
+        - TZ=America/New_York
 
   jackett:
     image: linuxserver/jackett
@@ -105,12 +109,12 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/New York
+      - TZ=America/New_York
     volumes:
-      # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Jackett:/config
-      # - /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Torrents:/downloads
-      - C:\Users\kirkb\Pictures:/config
-      - C:\Users\kirkb\Downloads:/downloads
+      - /media/zonmei/YottaDisk11/configs/jackett:/config
+      - /media/zonmei/YottaDisk21/Torrents:/data/downloads
+      # - C:\Users\kirkb\Pictures:/config
+      # - C:\Users\kirkb\Downloads:/downloads
     ports:
       - 9117:9117
     restart: unless-stopped
@@ -123,10 +127,10 @@ services:
       environment:
         - PUID=998
         - PGID=100
-        - TZ=America/NewYork
+        - TZ=America/New_York
         - UMASK_SET=022
       volumes:
-        #- /srv/dev-disk-by-uuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        #- /srv/dev-disk-by-partuuid-0d4a201c-b292-412d-ade6-cc5561e54f1f/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
         - ./Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       ports:
         - 9292:9090
@@ -139,7 +143,7 @@ services:
       environment:
         - PUID=998
         - PGID=100
-        - TZ=America/New York
+        - TZ=America/New_York
         - UMASK_SET=022
       volumes:
         - /:/host:ro,rslave
@@ -153,7 +157,7 @@ services:
     environment:
       - PUID=998
       - PGID=100
-      - TZ=America/New York
+      - TZ=America/New_York
       - UMASK_SET=022
     ports:
       - 3000:3000
